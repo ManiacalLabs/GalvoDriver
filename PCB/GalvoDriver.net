@@ -1,7 +1,7 @@
 (export (version D)
   (design
-    (source D:\CSSync\KiCAD\GalvoDriver\GalvoDriver\GalvoDriver.sch)
-    (date "7/6/2020 9:21:06 PM")
+    (source C:\Users\cavep\Documents\MLGITHUB\GalvoDriver\PCB\GalvoDriver.sch)
+    (date "7/13/2020 8:52:50 PM")
     (tool "Eeschema (5.1.6)-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -137,9 +137,11 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5EFED4AC))
     (comp (ref C1)
-      (value 1uF)
+      (value .1uF)
       (footprint Capacitors_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm)
       (datasheet ~)
+      (fields
+        (field (name DigiKey) https://www.digikey.com/product-detail/en/vishay-bc-components/K104Z15Y5VF5TL2/BC1160CT-ND/286782))
       (libsource (lib pspice) (part C) (description "Capacitor symbol for simulation only"))
       (sheetpath (names /) (tstamps /))
       (tstamp 5EF573EB))

@@ -741,7 +741,7 @@ Wire Wire Line
 Wire Wire Line
 	5850 1400 5900 1400
 Text Notes 6350 1250 0    50   ~ 0
-Connector Labels:\n1 - V+\n2 - GND\n3 - Laser +\n4 - Laser -
+Connector Labels:\n4 - V+\n3 - GND\n2 - Laser +\n1 - Laser -
 Wire Notes Line
 	5150 550  7200 550 
 Wire Notes Line
