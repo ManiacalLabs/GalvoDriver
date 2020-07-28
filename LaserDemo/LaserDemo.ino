@@ -6,12 +6,12 @@ const uint32_t* objectAddress[20];
 const char* objectName[20];
 int objectSize[20];
 int objectCount = 0;
-int objectIndex = 5;
+int objectIndex = 1;
 
 void (*genAddress[10])(int);
 const char* genName[10];
 int genCount = 0;
-int genIndex = 0;
+int genIndex = 1;
 
 // #include "wifi.h"
 
@@ -43,6 +43,7 @@ int objectCalls = 0;
 #include "spiral2a.h"
 #include "spiral3.h"
 #include "obama.h"
+#include "test.h"
 
 
 //--------------------------------------------
@@ -62,12 +63,13 @@ void genAlphabet(int init) {
 
   #define L_KPPS 20
   #define L_TOGGLE_DELAY 120
-  #define L_QUALITY 400
+  #define L_QUALITY 315
   
 //--------------------------------------------
 void setup()
 { 
   // initialize object array 
+  test();
   barney10();
   gear1();
   gear2();
@@ -101,10 +103,6 @@ void setup()
 long last_start = 0;
 //--------------------------------------------
 void loop() {
-
-  // server.handleClient();
-  // ArduinoOTA.handle();
-
   if (objectIndex > 0 && objectIndex <= objectCount) {
     Drawing::drawObject(objectAddress[objectIndex], objectSize[objectIndex]);
   }
@@ -121,9 +119,9 @@ void loop() {
   }
   
 
-  if (genIndex > 0 && genIndex <= genCount) {
-    (*genAddress[genIndex])(0);
-  }
+  // if (genIndex > 0 && genIndex <= genCount) {
+  //   (*genAddress[genIndex])(0);
+  // }
     
 }
 
