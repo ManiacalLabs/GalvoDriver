@@ -78,8 +78,8 @@ void Laser::sendToDAC(int x, int y)
 
   scanner_throttle();
   
-  dac.setVoltageA(x1);
-  dac.setVoltageB(y1);
+  dac.setValueA(x1);
+  dac.setValueB(y1);
   dac.updateDAC();
 
   // x1 &= 0xfff;

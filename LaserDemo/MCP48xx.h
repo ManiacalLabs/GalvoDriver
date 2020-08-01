@@ -1,6 +1,8 @@
 #ifndef MCP48XX_LIB_MCP48XX_H
 #define MCP48XX_LIB_MCP48XX_H
 
+// based on https://github.com/SteveGdvs/MCP48xx
+
 #include <Arduino.h>
 #include <SPI.h>
 
@@ -31,11 +33,11 @@ public:
 
     void init();
 
-    void setVoltage(uint16_t value, Channel channel);
+    void setValue(uint16_t value, Channel channel);
 
-    void setVoltageA(uint16_t value);
+    void setValueA(uint16_t value);
 
-    void setVoltageB(uint16_t value);
+    void setValueB(uint16_t value);
 
     void shutdownChannel(Channel channel);
 
@@ -87,7 +89,7 @@ MCP48xx<BITS_RES>::~MCP48xx() {
 }
 
 template<uint8_t BITS_RES>
-void MCP48xx<BITS_RES>::setVoltage(uint16_t value, Channel channel) {
+void MCP48xx<BITS_RES>::setValue(uint16_t value, Channel channel) {
     if (value > (1u << BITS_RES) - 1) {
         value = (1u << BITS_RES) - 1;
     } else {
@@ -98,13 +100,13 @@ void MCP48xx<BITS_RES>::setVoltage(uint16_t value, Channel channel) {
 }
 
 template<uint8_t BITS_RES>
-void MCP48xx<BITS_RES>::setVoltageA(uint16_t value) {
-    setVoltage(value, Channel::A);
+void MCP48xx<BITS_RES>::setValueA(uint16_t value) {
+    setValue(value, Channel::A);
 }
 
 template<uint8_t BITS_RES>
-void MCP48xx<BITS_RES>::setVoltageB(uint16_t value) {
-    setVoltage(value, Channel::B);
+void MCP48xx<BITS_RES>::setValueB(uint16_t value) {
+    setValue(value, Channel::B);
 }
 
 template<uint8_t BITS_RES>

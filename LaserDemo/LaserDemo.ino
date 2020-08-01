@@ -69,12 +69,12 @@ void genAlphabet(int init) {
 void setup()
 { 
   // initialize object array 
+  ilda12k();
   test();
   barney10();
   gear1();
   gear2();
   horse10();
-  ilda12k();
   obama();
   spiral1();
   spiral1a();
