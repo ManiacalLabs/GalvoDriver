@@ -25,12 +25,7 @@ Laser::Laser(int laserPin)
   _offsetX = 0;
   _offsetY = 0;
 
-  _moved = 0;
-  _maxMove = -1;
-  _laserForceOff = false;
   resetClipArea();
-
-  _zDist = 1000;
 
   setOptions(SCANNER_KPPS, LASER_TOGGLE_DELAY, LASER_QUALITY);
 
@@ -187,15 +182,11 @@ void Laser::sendto (long xpos, long ypos)
 
 void Laser::sendtoRaw (long xNew, long yNew)
 {
-  // devide into equal parts, using _quality
+  // divide into equal parts, using _quality
   long fdiffx = xNew - _x;
   long fdiffy = yNew - _y;
   long diffx = TO_INT(abs(fdiffx) * _quality); 
   long diffy = TO_INT(abs(fdiffy) * _quality);
-
-  // store movement for max move
-  long moved = _moved;
-  _moved += abs(fdiffx) + abs(fdiffy);
 
   // use the bigger direction
   if (diffx < diffy) 
@@ -215,16 +206,6 @@ void Laser::sendtoRaw (long xNew, long yNew)
   FIXPT tmpy = 0;
   for (int i = 0; i<diffx-1;i++) 
   {
-    // for max move, stop inside of line if required...
-    if (_maxMove != -1) {
-      long moved2 = moved + abs(TO_INT(tmpx)) + abs(TO_INT(tmpy));
-      if (!_laserForceOff && moved2 > _maxMove) {
-        off();
-        _laserForceOff = true;
-        _maxMoveX = _x + TO_INT(tmpx);
-        _maxMoveY = _y + TO_INT(tmpy);
-      }
-    } 
     tmpx += fdiffx;
     tmpy += fdiffy;
     sendToDAC(_x + TO_INT(tmpx), _y + TO_INT(tmpy));
@@ -233,20 +214,12 @@ void Laser::sendtoRaw (long xNew, long yNew)
     #endif
   }
 
-  // for max move, stop if required...
-  if (!_laserForceOff && _maxMove != -1 && _moved > _maxMove) {
-    off();
-    _laserForceOff = true;
-    _maxMoveX = xNew;
-    _maxMoveY = yNew;
-  }
-
   _x = xNew;
   _y = yNew;
   sendToDAC(_x, _y);
   #ifdef LASER_MOVE_DELAY
-    wait(LASER_MOVE_DELAY);
-    #endif
+  wait(LASER_MOVE_DELAY);
+  #endif
 }
 
 void Laser::drawline(long x1, long y1, long x2, long y2)
@@ -263,7 +236,7 @@ void Laser::drawline(long x1, long y1, long x2, long y2)
 
 void Laser::on()
 {
-  if (!_state && !_laserForceOff) 
+  if (!_state) 
   {
     _state = 1;
     ttlQueue[ttlNow] = 1;

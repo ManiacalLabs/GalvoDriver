@@ -16,6 +16,8 @@ typedef long FIXPT;
 #define FROM_INT(a) (a << PSHIFT)
 #define TO_INT(a) ((a + PROUNDBIT)>> PSHIFT)
 
+#define MAX_DIST 100
+
 
 /************************************************************************/
 
@@ -88,13 +90,6 @@ public:
   void resetClipArea(); 
   void setClipArea(long x, long y, long x1, long y1);
 
-  void resetMaxMove() { _maxMove = -1; _laserForceOff = false; }
-  void setMaxMove(long length) { _moved = 0; _maxMove = length; _laserForceOff = false; }
-  bool maxMoveReached() { return _laserForceOff; }
-  void getMaxMoveFinalPosition(long &x, long &y) { x = _maxMoveX; y = _maxMoveY; }
-
-  void setZDist(long dist) { _zDist = dist; }
-
   void setOptions(int kpps, int ltd, int lq);
   void getOptions(int &kpps, int &ltd, int &lq) { kpps = SCANNER_KPPS; ltd = LASER_TOGGLE_DELAY; lq = LASER_QUALITY; }
   
@@ -138,13 +133,7 @@ private:
   FIXPT _scale;
   long _offsetX;
   long _offsetY;
-
-  long _moved;
-  long _maxMove;
-  bool _laserForceOff;
-  long _maxMoveX;
-  long _maxMoveY;
-
+  
   long _oldX;
   long _oldY;
 
@@ -152,8 +141,6 @@ private:
   long _clipYMin;
   long _clipXMax;
   long _clipYMax;
-
-  long _zDist;
 };
 
 #endif

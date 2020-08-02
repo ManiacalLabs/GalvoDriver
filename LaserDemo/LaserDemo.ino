@@ -117,9 +117,9 @@ void loop() {
   laser.on();
   laser.sendto(L, L);
   delayMicroseconds(DELAY);
-  laser.sendto(L, H);
-   delayMicroseconds(DELAY);
-  laser.sendto(H, H);
+  // laser.sendto(L, H);
+  //  delayMicroseconds(DELAY);
+  laser.sendto(H/2, H);
    delayMicroseconds(DELAY);
   laser.sendto(H, L);
    delayMicroseconds(DELAY);
