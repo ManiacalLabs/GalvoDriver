@@ -4,28 +4,18 @@
 #define LASER_H
 
 #include "Arduino.h"
-#include "Basics.h"
 
 /****************************** 2 Single DACs ***************************/
 #include <SPI.h>
 
-// laser TTL on pin 4
-#define LDAC_PIN 5
-#define SS_PIN 15
+typedef long FIXPT;
+#define PRES             16384
+#define PSHIFT           14
+#define PROUNDBIT        (1 << (PSHIFT-1))
+#define FROM_FLOAT(a) (long(a*PRES))
+#define FROM_INT(a) (a << PSHIFT)
+#define TO_INT(a) ((a + PROUNDBIT)>> PSHIFT)
 
-#define MOSI  13    //MOSI
-#define MISO  12    //MISO
-#define SCK   14    //SCK
-
-/*
- * 15: 0 = DACa
- * 14: 0 = unbuffered
- * 13: 1 = NOT gain  (1x)
- * 12: 1 = NOT shutdown
- * 11 - 0: data
- */
-#define commandBits1 B00110000
-#define commandBits2 B10110000
 
 /************************************************************************/
 
@@ -39,8 +29,6 @@
 // defines the granularity of the line interpolation. 64 means that each line is split into steps of 64 pixels in the longer direction.
 // setting smaller values will slow down the rendering but will cause more linearity in the galvo movement,
 // setting bigger values will cause faster rendering, but lines will not be straight anymore.
-
-extern int laserPoints;
 
 //#define LASER_QUALITY 4096
 //extern int SCANNER_KPPS;
@@ -59,7 +47,7 @@ extern int laserPoints;
 // Defines the delay the laser waits after reaching a given position (in microseconds).
 #define LASER_END_DELAY 1
 // Defines the delay after each laser movement (used when interpolating lines, in microseconds), if not defines, 0 is used
-//#define LASER_MOVE_DELAY 5
+#define LASER_MOVE_DELAY 100
 
 // -- The following flags can be used to rotate/flip the output without changing the DAC wiring, just uncomment the desired swap/flip
 // define this to swap X and Y on the DAC
@@ -105,8 +93,6 @@ public:
   bool maxMoveReached() { return _laserForceOff; }
   void getMaxMoveFinalPosition(long &x, long &y) { x = _maxMoveX; y = _maxMoveY; }
 
-  void setEnable3D(bool flag) { _enable3D = flag; }
-  void setMatrix(const Matrix3& matrix) { _matrix = matrix; }
   void setZDist(long dist) { _zDist = dist; }
 
   void setOptions(int kpps, int ltd, int lq);
@@ -167,8 +153,6 @@ private:
   long _clipXMax;
   long _clipYMax;
 
-  bool _enable3D;
-  Matrix3 _matrix;
   long _zDist;
 };
 

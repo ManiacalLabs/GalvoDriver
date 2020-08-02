@@ -1,7 +1,4 @@
-char fileName[] = __FILE__;
-
-char temp[1000];
-
+// heavily based on https://github.com/obstruse/LaserDemo
 const uint32_t* objectAddress[20];
 const char* objectName[20];
 int objectSize[20];
@@ -23,8 +20,6 @@ int genIndex = 1;
 // Create laser instance (with laser pointer connected to digital pin 4)
 Laser laser(4);
 
-// #include "http.h"
-
 int objectNumber = 0;
 int objectStart = 0;
 int objectTime = 0;
@@ -32,18 +27,18 @@ int objectCalls = 0;
 
 
 // objects
-#include "horse10.h"
-#include "barney10.h"
-#include "ilda12k.h"
-#include "gear1.h"
-#include "gear2.h"
-#include "spiral1.h"
-#include "spiral1a.h"
-#include "spiral2.h"
-#include "spiral2a.h"
-#include "spiral3.h"
-#include "obama.h"
-#include "test.h"
+#include "p_horse10.h"
+#include "p_barney10.h"
+#include "p_ilda12k.h"
+#include "p_gear1.h"
+#include "p_gear2.h"
+#include "p_spiral1.h"
+#include "p_spiral1a.h"
+#include "p_spiral2.h"
+#include "p_spiral2a.h"
+#include "p_spiral3.h"
+#include "p_obama.h"
+#include "p_test.h"
 
 
 //--------------------------------------------
@@ -61,9 +56,9 @@ void genAlphabet(int init) {
 }
 
 
-  #define L_KPPS 20
-  #define L_TOGGLE_DELAY 120
-  #define L_QUALITY 315
+#define L_KPPS 20
+#define L_TOGGLE_DELAY 120
+#define L_QUALITY 315
   
 //--------------------------------------------
 void setup()
@@ -91,37 +86,42 @@ void setup()
   
   
   laser.setOptions(L_KPPS, L_TOGGLE_DELAY, L_QUALITY);
-
-  laserPoints = 0;
-
-  // wifiSetup();
-
-  // httpSetup();
-
 }
 
+#define L 100
+#define H 4000
+#define DELAY 5000
 long last_start = 0;
 //--------------------------------------------
 void loop() {
-  if (objectIndex > 0 && objectIndex <= objectCount) {
-    Drawing::drawObject(objectAddress[objectIndex], objectSize[objectIndex]);
-  }
-  else
-  {
-    objectIndex = 1;
-  }
+  // if (objectIndex > 0 && objectIndex <= objectCount) {
+  //   Drawing::drawObject(objectAddress[objectIndex], objectSize[objectIndex]);
+  // }
+  // else
+  // {
+  //   objectIndex = 1;
+  // }
   
-  if((millis() - last_start) > 5000)
-  {
-    last_start = millis();
-    objectIndex++;
-    if(objectIndex >= objectCount) objectIndex = 1;
-  }
+  // if((millis() - last_start) > 5000)
+  // {
+  //   last_start = millis();
+  //   objectIndex++;
+  //   if(objectIndex >= objectCount) objectIndex = 1;
+  // }
   
 
   // if (genIndex > 0 && genIndex <= genCount) {
   //   (*genAddress[genIndex])(0);
   // }
-    
+  
+  laser.on();
+  laser.sendto(L, L);
+  delayMicroseconds(DELAY);
+  laser.sendto(L, H);
+   delayMicroseconds(DELAY);
+  laser.sendto(H, H);
+   delayMicroseconds(DELAY);
+  laser.sendto(H, L);
+   delayMicroseconds(DELAY);
 }
 

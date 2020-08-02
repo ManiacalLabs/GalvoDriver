@@ -7,14 +7,6 @@
 
 MCP4822 dac(10);
 
-int laserPoints = 0;
-
-//void laserToggleOn();
-//void laserToggleOff();
-
-//int ttlPin;
-
-
 Laser::Laser(int laserPin)
 {
   _last_scan = 0;
@@ -38,7 +30,6 @@ Laser::Laser(int laserPin)
   _laserForceOff = false;
   resetClipArea();
 
-  _enable3D = false;
   _zDist = 1000;
 
   setOptions(SCANNER_KPPS, LASER_TOGGLE_DELAY, LASER_QUALITY);
@@ -59,7 +50,6 @@ void Laser::init()
 
 void Laser::sendToDAC(int x, int y)
 {
-  // Serial.println("sendtoDAC");
   #ifdef LASER_SWAP_XY
   int x1 = y;
   int y1 = x;
@@ -74,32 +64,11 @@ void Laser::sendToDAC(int x, int y)
   y1 = 4095 - y1;
   #endif
 
-  laserPoints++;
-
   scanner_throttle();
   
   dac.setValueA(x1);
   dac.setValueB(y1);
-  dac.updateDAC();
-
-  // x1 &= 0xfff;
-  // digitalWrite (SS_PIN, LOW);
-  // SPI.transfer((x1 >> 8) | commandBits1);
-  // SPI.transfer((x1 & 0xff));
-  // digitalWrite (SS_PIN, HIGH);
-
-  // y1 &= 0xfff;
-  // digitalWrite (SS_PIN, LOW);
-  // SPI.transfer((y1 >> 8) | commandBits2);
-  // SPI.transfer((y1 & 0xff));
-  // digitalWrite (SS_PIN, HIGH);
-
-  // // latch
-  // digitalWrite (LDAC_PIN, LOW);
-  // digitalWrite (LDAC_PIN, HIGH);
-
-//  wait(laser_throttle);
-  
+  dac.updateDAC();  
 }
 
 void Laser::resetClipArea()
@@ -198,17 +167,6 @@ bool Laser::clipLine(long& x0, long& y0, long& x1, long& y1)
 
 void Laser::sendto (long xpos, long ypos)
 {
-//   Serial.println("sendto");
-  if (_enable3D) {
-    Vector3i p1;
-    Vector3i p;
-    p1.x = xpos;
-    p1.y = ypos;
-    p1.z = 0;
-    Matrix3::applyMatrix(_matrix, p1, p);
-    xpos = ((_zDist*(long)p.x) / (_zDist + (long)p.z)) + 2048;
-    ypos = ((_zDist*(long)p.y) / (_zDist + (long)p.z)) + 2048;
-  }
   // Float was too slow on Arduino, so I used
   // fixed point precision here:
   long xNew = TO_INT(xpos * _scale) + _offsetX;
@@ -219,12 +177,8 @@ void Laser::sendto (long xpos, long ypos)
   long oldY = _oldY;
   if (clipLine(oldX,oldY, clipX,clipY)) {
     if (oldX != _oldX || oldY != _oldY) {
-//    Serial.print ("...st.1 ");
-//    Serial.println (oldX);
       sendtoRaw(oldX, oldY);
     }
-//    Serial.print ("...st.2 ");
-//    Serial.println (clipX);
     sendtoRaw(clipX, clipY);
   }
   _oldX = xNew;
@@ -233,7 +187,6 @@ void Laser::sendto (long xpos, long ypos)
 
 void Laser::sendtoRaw (long xNew, long yNew)
 {
-  // Serial.println("sendtoRaw");
   // devide into equal parts, using _quality
   long fdiffx = xNew - _x;
   long fdiffy = yNew - _y;
@@ -249,8 +202,7 @@ void Laser::sendtoRaw (long xNew, long yNew)
   {
     diffx = diffy;     
   }
-  // Serial.println("str...0");
-  // Serial.println(diffx);
+
   if (diffx == 0 ) {
     fdiffx = 0;
     fdiffy = 0;
@@ -259,13 +211,10 @@ void Laser::sendtoRaw (long xNew, long yNew)
     fdiffy = FROM_INT(fdiffy) / diffx;
   }
   // interpolate in FIXPT
-  // Serial.println("str...0.1");
   FIXPT tmpx = 0;
   FIXPT tmpy = 0;
-  // Serial.println("str...1");
   for (int i = 0; i<diffx-1;i++) 
   {
-  // Serial.println("str...1.1");
     // for max move, stop inside of line if required...
     if (_maxMove != -1) {
       long moved2 = moved + abs(TO_INT(tmpx)) + abs(TO_INT(tmpy));
@@ -278,15 +227,12 @@ void Laser::sendtoRaw (long xNew, long yNew)
     } 
     tmpx += fdiffx;
     tmpy += fdiffy;
-//   Serial.print("str...2 ");
-//   Serial.println (_x + TO_INT(tmpx));
     sendToDAC(_x + TO_INT(tmpx), _y + TO_INT(tmpy));
     #ifdef LASER_MOVE_DELAY
     wait(LASER_MOVE_DELAY);
     #endif
   }
-  // Serial.println("str...2.1");
-  
+
   // for max move, stop if required...
   if (!_laserForceOff && _maxMove != -1 && _moved > _maxMove) {
     off();
@@ -297,10 +243,10 @@ void Laser::sendtoRaw (long xNew, long yNew)
 
   _x = xNew;
   _y = yNew;
-//     Serial.print("str...3 ");
-//     Serial.println (_x);
   sendToDAC(_x, _y);
-//  wait(LASER_END_DELAY);
+  #ifdef LASER_MOVE_DELAY
+    wait(LASER_MOVE_DELAY);
+    #endif
 }
 
 void Laser::drawline(long x1, long y1, long x2, long y2)
@@ -360,51 +306,6 @@ void Laser::scanner_throttle() {
 
 }
 
-/*
-void Laser::scanner_throttle() {
-
-  int ttlAction;
-  int ttlThen;
-  unsigned int tempTime;
-  
-  char temp[200];
-
-  ttlThen = (ttlNow 
-            - ttlCourse
-            + 16) & 0xf;
-
-  ttlAction = ttlQueue[ttlThen];
-
-  do {
-    tempTime = micros();
-    if (ttlAction >= 0  && _last_scan + ttlFine <= tempTime) {
-      digitalWrite(_laserPin, ttlAction);
-      ttlAction = -1;
-    } 
-    yield(); 
-  } while (_last_scan + (1000/SCANNER_KPPS) > tempTime);
-
-  ttlNow = ++ttlNow & 0xf;
-  ttlQueue[ttlNow] = -1;
-  
-  _last_scan = micros();
-
-}
-*/
-/*
-void Laser::scanner_throttle() {
-  while (_last_scan + (1000/SCANNER_KPPS) > micros());
-  _last_scan = micros();
-
-  ttlThen = (ttlNow - (LASER_TOGGLE_DELAY * SCANNER_KPPS / 1000) + 16) & 0xf;
-  if (ttlQueue[ttlThen] >= 0) {
-    digitalWrite(_laserPin, ttlQueue[ttlThen]);
-    yield();
-  }
-  ttlNow = ++ttlNow & 0xf;
-  ttlQueue[ttlNow] = -1;
-}
-*/
 void Laser::setOptions(int kpps, int ltd, int lq) {
 
   if ( kpps ) { SCANNER_KPPS = kpps; }
@@ -433,13 +334,3 @@ void Laser::setOffset(long offsetX, long offsetY)
   _offsetX = offsetX;
   _offsetY = offsetY;
 }
-
-/*
-void laserToggleOn() {
-    digitalWrite(ttlPin,HIGH);
-}
-
-void laserToggleOff() {
-  digitalWrite(ttlPin,LOW);  
-}
-*/
