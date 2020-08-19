@@ -366,17 +366,6 @@ Wire Wire Line
 	1700 1350 1600 1350
 Wire Wire Line
 	1700 1450 1600 1450
-$Comp
-L Connector:Conn_01x07_Male J3
-U 1 1 5EFED4AC
-P 1250 2500
-F 0 "J3" H 1250 2100 50  0000 C CNN
-F 1 "Conn_01x07_Male" V 1150 2500 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x07_Pitch2.54mm" H 1250 2500 50  0001 C CNN
-F 3 "~" H 1250 2500 50  0001 C CNN
-	1    1250 2500
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	1900 2200 1900 2000
 Wire Wire Line
@@ -384,9 +373,9 @@ Wire Wire Line
 Wire Wire Line
 	1900 2700 1900 2900
 Wire Wire Line
-	1900 2900 2550 2900
-Text Notes 650  2650 0    50   ~ 0
-Connector Labels:\n1 - 3V3-5V\n2 - CLK\n3 - LATCH\n4 - MOSI\n5 - CS\n6 - LASER\n7 - GND
+	1900 2900 2000 2900
+Text Notes 700  4250 0    50   ~ 0
+Connector Labels:\n1 - 3V3-5V\n2 - CLK\n3 - MOSI\n4 - LASER\n5 - GND
 Text GLabel 8650 2800 0    50   Input ~ 0
 A_ILDA+
 Text GLabel 7550 3050 2    50   Input ~ 0
@@ -507,32 +496,32 @@ Wire Wire Line
 	2250 3350 2300 3350
 Wire Wire Line
 	2850 3350 2800 3350
-Text GLabel 1900 3950 2    50   Input ~ 0
+Text GLabel 2600 6550 2    50   Input ~ 0
 AUDIO_R
-Text GLabel 1900 3850 2    50   Input ~ 0
+Text GLabel 2600 6450 2    50   Input ~ 0
 GND
-Text GLabel 1900 4050 2    50   Input ~ 0
+Text GLabel 2600 6650 2    50   Input ~ 0
 AUDIO_L
 Text GLabel 4750 2800 0    50   Input ~ 0
 AUDIO_L
 $Comp
 L Connector:AudioJack3 J6
 U 1 1 5EF780C5
-P 1600 3950
-F 0 "J6" H 1550 4300 50  0000 C CNN
-F 1 "AudioJack3" H 1550 4200 50  0000 C CNN
-F 2 "Connector_Audio:Jack_3.5mm_CUI_SJ1-3533NG_Horizontal" H 1650 3650 50  0000 C CNN
-F 3 "https://www.cuidevices.com/product/resource/sj1-353xng.pdf" H 1600 3950 50  0001 C CNN
-F 4 "https://www.digikey.com/product-detail/en/cui-devices/SJ1-3533NG/CP1-3533NG-ND/738701" H 1600 3950 50  0001 C CNN "DigiKey"
-	1    1600 3950
+P 2300 6550
+F 0 "J6" H 2250 6900 50  0000 C CNN
+F 1 "AudioJack3" H 2250 6800 50  0000 C CNN
+F 2 "Connector_Audio:Jack_3.5mm_CUI_SJ1-3533NG_Horizontal" H 2350 6250 50  0000 C CNN
+F 3 "https://www.cuidevices.com/product/resource/sj1-353xng.pdf" H 2300 6550 50  0001 C CNN
+F 4 "https://www.digikey.com/product-detail/en/cui-devices/SJ1-3533NG/CP1-3533NG-ND/738701" H 2300 6550 50  0001 C CNN "DigiKey"
+	1    2300 6550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1900 3850 1800 3850
+	2600 6450 2500 6450
 Wire Wire Line
-	1800 3950 1900 3950
+	2500 6550 2600 6550
 Wire Wire Line
-	1900 4050 1800 4050
+	2600 6650 2500 6650
 $Comp
 L Connector:Conn_01x03_Male J5
 U 1 1 5EF8C738
@@ -672,11 +661,7 @@ Wire Wire Line
 Wire Wire Line
 	1450 2300 2050 2300
 Wire Wire Line
-	1450 2400 2050 2400
-Wire Wire Line
 	1450 2500 2050 2500
-Wire Wire Line
-	1450 2600 2050 2600
 Wire Wire Line
 	1450 2700 1900 2700
 Wire Wire Line
@@ -769,4 +754,38 @@ Wire Wire Line
 Wire Wire Line
 	5750 950  5900 950 
 Connection ~ 5900 950 
+$Comp
+L 74ahc125:74AHC125 U?
+U 1 1 5F28DEB8
+P 2550 4650
+F 0 "U?" H 2550 5465 50  0000 C CNN
+F 1 "74AHC125" H 2550 5374 50  0000 C CNN
+F 2 "" H 2550 4650 60  0000 C CNN
+F 3 "" H 2550 4650 60  0000 C CNN
+	1    2550 4650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2050 2400 2000 2400
+Wire Wire Line
+	2000 2400 2000 2900
+Connection ~ 2000 2900
+Wire Wire Line
+	2000 2900 2050 2900
+Wire Wire Line
+	2050 2600 2050 2900
+Connection ~ 2050 2900
+Wire Wire Line
+	2050 2900 2550 2900
+$Comp
+L Connector:Conn_01x05_Male J?
+U 1 1 5F2A1C2E
+P 1250 4750
+F 0 "J?" H 1358 5131 50  0000 C CNN
+F 1 "Conn_01x05_Male" H 1358 5040 50  0000 C CNN
+F 2 "" H 1250 4750 50  0001 C CNN
+F 3 "~" H 1250 4750 50  0001 C CNN
+	1    1250 4750
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

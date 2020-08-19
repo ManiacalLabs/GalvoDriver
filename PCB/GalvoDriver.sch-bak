@@ -487,9 +487,10 @@ L pspice:C C1
 U 1 1 5EF573EB
 P 2550 3350
 F 0 "C1" V 2865 3350 50  0000 C CNN
-F 1 "1uF" V 2774 3350 50  0000 C CNN
+F 1 ".1uF" V 2774 3350 50  0000 C CNN
 F 2 "Capacitors_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 2550 3350 50  0001 C CNN
 F 3 "~" H 2550 3350 50  0001 C CNN
+F 4 "https://www.digikey.com/product-detail/en/vishay-bc-components/K104Z15Y5VF5TL2/BC1160CT-ND/286782" V 2550 3350 50  0001 C CNN "DigiKey"
 	1    2550 3350
 	0    -1   -1   0   
 $EndComp
