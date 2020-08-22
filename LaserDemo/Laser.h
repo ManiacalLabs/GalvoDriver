@@ -17,6 +17,20 @@ typedef long FIXPT;
 #define TO_INT(a) ((a + PROUNDBIT)>> PSHIFT)
 
 #define MAX_DIST 100
+#define MIN_DIST 10
+
+#define PLAN_BUFFER_SIZE 2048
+
+// 7 bytes per block
+typedef struct {
+  uint16_t x;
+  uint16_t y;
+  uint8_t r;
+#ifdef LASER_RGB
+  uint8_t g;
+  uint8_t b;
+#endif
+} plan_block_t;
 
 
 /************************************************************************/
@@ -95,8 +109,31 @@ public:
   
   //! send X/Y to DAC
   void sendToDAC(int x, int y);
+  
+  void push_plan_block(plan_block_t block)
+  {
+    if(plan_tail >= PLAN_BUFFER_SIZE) plan_tail = 0;
+    else plan_tail++;
+    plan_buffer[plan_tail] = block;
+    plan_empty = false;
+  }
+  
+  plan_block_t get_plan_block()
+  {
+    if(plan_empty) return NULL;
+    return plan_buffer[plan_head];
+    if(plan_head >= PLAN_BUFFER_SIZE) plan_head = 0;
+    else plan_head++;
+    plan_empty = (plan_head == plan_tail)
+  }
 
 private:
+
+  // plan ring buffer
+  plan_block_t plan_buffer[PLAN_BUFFER_SIZE];
+  uint16_t plan_head = 0;
+  uint16_t plan_tail = 0;
+  bool plan_empty;
 
   int ttlNow = 0;
   int ttlThen = 0;
@@ -108,11 +145,6 @@ private:
   int SCANNER_KPPS = 20;
   int LASER_TOGGLE_DELAY = 120;
   int LASER_QUALITY = 400;
-
-
-
-//! send X/Y to DAC
-////  void sendToDAC(int x, int y);
 
   //! computes the out code for line clipping
   int computeOutCode(long x, long y);
