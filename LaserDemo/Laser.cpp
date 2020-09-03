@@ -182,6 +182,21 @@ void Laser::sendto (long xpos, long ypos)
 
 void Laser::sendtoRaw (long xNew, long yNew)
 {
+  long fdiffx = xNew - _x;
+  long fdiffy = yNew - _y;
+  if(fdiffx >= fdiffy)
+  {
+    
+  }
+  else
+  {
+    
+  }
+  
+}
+
+void Laser::sendtoRaw (long xNew, long yNew)
+{
   // divide into equal parts, using _quality
   long fdiffx = xNew - _x;
   long fdiffy = yNew - _y;
