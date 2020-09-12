@@ -74,15 +74,13 @@ typedef struct {
 #define LASER_FLIP_Y
 
 //! Encapsulates the laser movement and on/off state.
-class Laser
+class LaserGalvo
 {
 public:
-  //! The laser is initialized with the laserPin,
-  //! which selects the digital pin that turns the laser pointer on/off.
-  Laser(int laserPin);
+  LaserGalvo();
 
   
-  void init();
+  void init(int laserPin);
 
   //! send the laser to the given position, scaled and translated and line clipped.
   void sendto(long x, long y);
@@ -109,31 +107,20 @@ public:
   
   //! send X/Y to DAC
   void sendToDAC(int x, int y);
+  bool add_point(uint16_t x, uint16_t y, uint8_t r=0, uint8_t g=0, uint8_t b=0);
+  bool move_next();
   
-  void push_plan_block(plan_block_t block)
-  {
-    if(plan_tail >= PLAN_BUFFER_SIZE) plan_tail = 0;
-    else plan_tail++;
-    plan_buffer[plan_tail] = block;
-    plan_empty = false;
-  }
+  volatile bool do_swap = false;
+  void swap() { do_swap = true; while(do_swap){ delayMicroseconds(100); }}
+  void swap_buffers();
   
-  plan_block_t get_plan_block()
-  {
-    if(plan_empty) return NULL;
-    return plan_buffer[plan_head];
-    if(plan_head >= PLAN_BUFFER_SIZE) plan_head = 0;
-    else plan_head++;
-    plan_empty = (plan_head == plan_tail)
-  }
-
 private:
-
-  // plan ring buffer
-  plan_block_t plan_buffer[PLAN_BUFFER_SIZE];
-  uint16_t plan_head = 0;
-  uint16_t plan_tail = 0;
-  bool plan_empty;
+  // plan buffer
+  volatile plan_block_t block_buffers[2][PLAN_BUFFER_SIZE];
+  volatile uint8_t play_buffer = 0;
+  volatile uint8_t plan_buffer = 1;
+  volatile long play_index = 0;
+  volatile long buffer_tail[2] = {-1, -1};
 
   int ttlNow = 0;
   int ttlThen = 0;
@@ -153,6 +140,9 @@ private:
 
   void scanner_throttle();
   unsigned long _last_scan;
+  
+  void set_block(long index, uint16_t x, uint16_t y, uint8_t r, uint8_t g=0, uint8_t b=0);
+  
 
   int _laserPin;
 
@@ -174,5 +164,7 @@ private:
   long _clipXMax;
   long _clipYMax;
 };
+
+extern LaserGalvo Laser; 
 
 #endif
