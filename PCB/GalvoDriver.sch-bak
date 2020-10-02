@@ -369,7 +369,7 @@ Wire Wire Line
 Wire Wire Line
 	1900 2900 2000 2900
 Text Notes 700  3900 0    50   ~ 0
-Connector Labels:\n1 - 3V3-5V\n2 - CLK\n3 - MOSI\n4 - LASER\n5 - GND
+Connector Labels:\n1 - 3V3-5V\n2 - CLK\n3 - MOSI\n4 - CS\n5 - LASER\n6 - GND
 Text GLabel 8650 2800 0    50   Input ~ 0
 A_ILDA+
 Text GLabel 7550 3050 2    50   Input ~ 0
@@ -749,24 +749,6 @@ Wire Wire Line
 	2000 2400 2000 2900
 Connection ~ 2000 2900
 Wire Wire Line
-	2000 2900 2050 2900
-Wire Wire Line
-	2050 2600 2050 2900
-Connection ~ 2050 2900
-Wire Wire Line
-	2050 2900 2550 2900
-$Comp
-L Connector:Conn_01x05_Male J3
-U 1 1 5F2A1C2E
-P 1200 4400
-F 0 "J3" H 1308 4781 50  0000 C CNN
-F 1 "Conn_01x05_Male" H 1308 4690 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm" H 1200 4400 50  0001 C CNN
-F 3 "~" H 1200 4400 50  0001 C CNN
-	1    1200 4400
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
 	1900 4250 1800 4250
 Wire Wire Line
 	1800 5400 3300 5400
@@ -786,29 +768,15 @@ Wire Wire Line
 Wire Wire Line
 	1750 5150 1900 5150
 Wire Wire Line
-	1900 4850 1750 4850
-Wire Wire Line
-	1750 4850 1750 5150
-Wire Wire Line
 	1800 4550 1900 4550
 Connection ~ 1800 4550
-Wire Wire Line
-	1800 4550 1800 4750
-Wire Wire Line
-	1400 4300 1700 4300
 Wire Wire Line
 	1700 4300 1700 4150
 Wire Wire Line
 	1700 4150 1900 4150
-Text GLabel 1450 4500 2    50   Input ~ 0
+Text GLabel 1400 4600 2    50   Input ~ 0
 LASER
-Wire Wire Line
-	1400 4600 1400 5400
-Wire Wire Line
-	1400 5400 1800 5400
 Connection ~ 1800 5400
-Wire Wire Line
-	1400 4200 1650 4200
 Wire Wire Line
 	1650 4200 1650 3900
 Text GLabel 3250 3900 2    50   Input ~ 0
@@ -817,23 +785,15 @@ Wire Wire Line
 	3200 3900 3250 3900
 Connection ~ 3200 3900
 NoConn ~ 3200 4800
-NoConn ~ 3200 4700
-Connection ~ 1750 4850
 Wire Wire Line
 	1650 3900 1750 3900
 Wire Wire Line
 	3200 3900 1750 3900
 Connection ~ 1750 3900
 Wire Wire Line
-	1750 3900 1750 4850
-Wire Wire Line
-	1400 4500 1450 4500
-Wire Wire Line
 	1850 4400 1850 4450
 Wire Wire Line
 	1850 4450 1900 4450
-Wire Wire Line
-	1400 4400 1850 4400
 Text GLabel 3300 4500 2    50   Input ~ 0
 CLK
 Wire Wire Line
@@ -850,11 +810,6 @@ Wire Wire Line
 	1850 2300 2050 2300
 Wire Wire Line
 	1850 2500 2050 2500
-Wire Wire Line
-	1900 4750 1800 4750
-Connection ~ 1800 4750
-Wire Wire Line
-	1800 4750 1800 5050
 Wire Wire Line
 	1900 5050 1800 5050
 Connection ~ 1800 5050
@@ -880,4 +835,52 @@ Wire Wire Line
 	2250 5700 2300 5700
 Wire Wire Line
 	2850 5700 2800 5700
+$Comp
+L Connector:Conn_01x06_Male J3
+U 1 1 5F775AF0
+P 1150 4400
+F 0 "J3" H 1258 4781 50  0000 C CNN
+F 1 "Conn_01x06_Male" H 1258 4690 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x06_Pitch2.54mm" H 1150 4400 50  0001 C CNN
+F 3 "~" H 1150 4400 50  0001 C CNN
+	1    1150 4400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1350 4700 1350 5400
+Wire Wire Line
+	1350 5400 1800 5400
+Wire Wire Line
+	1350 4200 1650 4200
+Wire Wire Line
+	1350 4300 1700 4300
+Wire Wire Line
+	1350 4400 1850 4400
+Wire Wire Line
+	1350 4500 1700 4500
+Wire Wire Line
+	1700 4500 1700 4750
+Wire Wire Line
+	1750 3900 1750 5150
+Wire Wire Line
+	1900 4850 1800 4850
+Connection ~ 1800 4850
+Wire Wire Line
+	1800 4850 1800 5050
+Wire Wire Line
+	1800 4550 1800 4850
+Wire Wire Line
+	1700 4750 1900 4750
+Text GLabel 3300 4700 2    50   Input ~ 0
+CS
+Wire Wire Line
+	3200 4700 3300 4700
+Text GLabel 1850 2600 0    50   Input ~ 0
+CS
+Wire Wire Line
+	2000 2900 2550 2900
+Wire Wire Line
+	1850 2600 2050 2600
+Wire Wire Line
+	1350 4600 1400 4600
 $EndSCHEMATC
