@@ -617,7 +617,7 @@ F 2 "Connectors_JST:JST_XH_B03B-XH-A_03x2.50mm_Straight" H 8950 2900 50  0001 C 
 F 3 "~" H 8950 2900 50  0001 C CNN
 F 4 "https://www.digikey.com/product-detail/en/jst-sales-america-inc/XHP-3/455-2219-ND/1651017" H 8950 2900 50  0001 C CNN "DigiKey"
 	1    8950 2900
-	1    0    0    -1  
+	1    0    0    1   
 $EndComp
 $Comp
 L Connector_Generic:Conn_01x03 J7
@@ -629,7 +629,7 @@ F 2 "Connectors_JST:JST_XH_B03B-XH-A_03x2.50mm_Straight" H 8950 4950 50  0001 C 
 F 3 "~" H 8950 4950 50  0001 C CNN
 F 4 "https://www.digikey.com/product-detail/en/jst-sales-america-inc/XHP-3/455-2219-ND/1651017" H 8950 4950 50  0001 C CNN "DigiKey"
 	1    8950 4950
-	1    0    0    -1  
+	1    0    0    1   
 $EndComp
 Wire Wire Line
 	8650 2800 8750 2800
